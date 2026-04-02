@@ -95,13 +95,19 @@ class FileManagerPlugin implements Plugin
     // Schema Example Page Configuration
     // =========================================================================
 
-    protected bool $schemaExampleEnabled = true;
+    protected bool $schemaExampleEnabled = false;
 
     // =========================================================================
     // Embed Config Test Page Configuration (for E2E testing)
     // =========================================================================
 
-    protected bool $embedConfigTestEnabled = true;
+    protected bool $embedConfigTestEnabled = false;
+
+    // =========================================================================
+    // FileSystemItem Resource Configuration
+    // =========================================================================
+
+    protected bool $fileSystemItemResourceEnabled = false;
 
     // =========================================================================
     // Icon Configuration
@@ -166,7 +172,9 @@ class FileManagerPlugin implements Plugin
                 $pages[] = EmbedConfigTest::class;
             }
 
-            $resources[] = FileSystemItemResource::class;
+            if ($this->fileSystemItemResourceEnabled) {
+                $resources[] = FileSystemItemResource::class;
+            }
         }
 
         if (!empty($pages)) {
