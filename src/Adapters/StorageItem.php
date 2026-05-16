@@ -166,8 +166,10 @@ class StorageItem implements FileManagerItemInterface
 
     public function getThumbnail(): ?string
     {
-        // Storage mode doesn't support thumbnails by default
-        // Could be extended to check for companion .thumb files
+        if ($this->isImage()) {
+            return $this->getUrl();
+        }
+
         return null;
     }
 
@@ -258,6 +260,19 @@ class StorageItem implements FileManagerItemInterface
         return $this->disk;
     }
 
+    public function getUrl(): ?string
+    {
+        if ($this->isDirectory) {
+            return null;
+        }
+
+        try {
+            return \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->path);
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
     public function toArray(): array
     {
         return [
@@ -280,6 +295,7 @@ class StorageItem implements FileManagerItemInterface
             'is_audio' => $this->isAudio(),
             'is_document' => $this->isDocument(),
             'depth' => $this->getDepth(),
+            'url' => $this->getUrl(),
         ];
     }
 
