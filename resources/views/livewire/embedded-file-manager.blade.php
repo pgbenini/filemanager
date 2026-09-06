@@ -493,19 +493,17 @@
                 Cancel
             </x-filament::button>
             <x-filament::button
-                x-on:click="$wire.uploadFiles()"
-                wire:loading.attr="disabled"
-                wire:target="uploadedFiles, uploadFiles"
+                wire:click="uploadFiles"
+                wire:key="embedded-upload-btn-{{ $this->getId() }}-{{ count($uploadedFiles) > 0 ? 'ready' : 'empty' }}"
                 :disabled="count($uploadedFiles) === 0"
             >
-                <span wire:loading.remove wire:target="uploadedFiles, uploadFiles">
+                <span wire:loading.remove wire:target="uploadFiles">
                     @if(count($uploadedFiles) > 0)
                         Upload {{ count($uploadedFiles) }} File(s)
                     @else
                         Select Files First
                     @endif
                 </span>
-                <span wire:loading wire:target="uploadedFiles">Processing...</span>
                 <span wire:loading wire:target="uploadFiles">Uploading...</span>
             </x-filament::button>
         </x-slot>
